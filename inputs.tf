@@ -1,19 +1,30 @@
 variable "region" {
-    type        = string
-    description = "(optional) region where the resources will be created"
-    default     = "ap-south-1"
+    type = string
+  
+}
+variable "vpc_name" {
+    type = list(string)
+  
+}
+variable "vpc_cidr_block" {
+    type = list(string)
+  
+}
+variable "primary_subnet_cidr_block" {
+    type = list(string)
+  
+}
+variable "public_subnet_cidr_block" {
+    type = list(string)
+  
+}
+variable "primary_name_tags" {
+    type = list(string)
+  
+}
+variable "public_name_tags" {
+    type = list(string)
+  
 }
 
-variable "cidr_block" {
-    type        = string
-    default     = "192.168.0.0/16"
-}
 
-variable "subnet_cidrs" {
-    type        = list(string)
-}
-
-variable "subnet_name_tags" {
-    type        = list(string)
-
-}
