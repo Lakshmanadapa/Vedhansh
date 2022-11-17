@@ -2,29 +2,23 @@ variable "region" {
     type = string
   
 }
-variable "vpc_name" {
-    type = list(string)
-  
-}
 variable "vpc_cidr_block" {
+    type = string
+  
+}
+variable "vpc_name" {
+    type = string
+  
+}
+variable "private_subnet_cidr_block" {
     type = list(string)
   
 }
-variable "primary_subnet_cidr_block" {
+variable "public_subnets_cidr_block" {
     type = list(string)
   
 }
-variable "public_subnet_cidr_block" {
-    type = list(string)
+variable "ami_id" {
+    type = string
   
 }
-variable "primary_name_tags" {
-    type = list(string)
-  
-}
-variable "public_name_tags" {
-    type = list(string)
-  
-}
-
-
