@@ -1,0 +1,81 @@
+---
+- name: installing wildfly(JBOSS)
+  become: yes
+  hosts: all
+  tasks:
+    - name: installing java
+      ansible.builtin.apt:
+        name: openjdk-11-jdk
+        update_cache: yes
+        state: present
+    - name: Download foo.conf
+      ansible.builtin.get_url:
+        url: https://github.com/wildfly/wildfly/releases/download/25.0.1.Final/wildfly-25.0.1.Final.tar.gz
+        dest: /etc/wildfly-25.0.1.Final.tar.gz
+        mode: "0777"
+    - name: Unarchive a file that is already on the remote machine
+      ansible.builtin.unarchive:
+        src: /etc/wildfly-25.0.1.Final.tar.gz
+        dest: /opt/wildfly
+        remote_src: yes
+    - name: Ensure group "somegroup" exists
+      ansible.builtin.group:
+        name: wildfly
+        state: present
+    - name: Add the user 'johnd' with a specific uid and a primary group of 'admin'
+      ansible.builtin.user:
+        name: user
+        comment: user
+        uid: 2050
+        group: wildfly
+    - name: Create Folder
+      file: 
+        path: /etc/wildfly
+        owner: wildfly
+        group: wildfly
+        mode: 0777
+        state: directory
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: /opt/wildfly/docs/contrib/scripts/systemd/wildfly.conf
+        dest: /etc/wildfly/
+        owner: wildfly
+        group: wildfly
+        mode: '0777'
+        remote_src: yes
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: /opt/wildfly/docs/contrib/scripts/systemd/wildfly.service
+        dest: /etc/systemd/system/
+        owner: wildfly
+        group: wildfly
+        mode: '0777'
+        remote_src: yes
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: /opt/wildfly/docs/contrib/scripts/systemd/launch.sh
+        dest: /opt/wildfly/bin/
+        owner: wildfly
+        group: wildfly
+        mode: '0777'
+        remote_src: yes
+    - name: Change file ownership, group and permissions
+      ansible.builtin.file:
+        path: /opt/wildfly/bin/launch.sh
+        owner: wildfly  
+        group: wildfly
+        mode: '0777'
+    - name: ensure the apache service is running and enabled
+      ansible.builtin.systemd:
+        name: wildfly.service
+        state: restarted
+        daemon_reload: yes
+    - name: Start a service with systemd
+      systemd:
+        name: wildfly.service
+        state: started
+    - name: Enable nginx service
+      systemd:
+        name: wildfly.service
+        enabled: true
+        masked: no
