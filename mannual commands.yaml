@@ -1,0 +1,16 @@
+sudo apt update
+ sudo apt install openjdk-11-jdk -y
+ sudo groupadd -r wildfly
+ sudo useradd -r -g wildfly /opt/wildfly -s /sbin/nologin wildfly
+  cd /tmp
+  wget wget https://github.com/wildfly/wildfly/releases/download/25.0.1.Final/wildfly-25.0.1.Final.tar.gz
+  tar xvf wildfly-20.0.1.Final.tar.gz
+  sudo mv wildfly-20.0.1.Final/ /opt/wildfly
+  sudo chown -RH wildfly: /opt/wildfly
+  sudo mkdir -p /etc/wildfly
+  sudo cp/opt/wildfly/docs/contrib/scripts/systemd/wildfly.conf /etc/wildfly/
+  sudo cp /opt/wildfly/docs/contrib/scripts/systemd/launch.sh /opt/wildfly/bin/
+   sudo sh -c 'chmod +x /opt/wildfly/bi n/*.sh'
+   sudo cp /opt/wildfly/doc/contrib/scripts/systemd/wildfly.service /etc/systemd/system
+   sudo systemctl start wildfly.service
+   sudo systemctl enable wildfly.service
