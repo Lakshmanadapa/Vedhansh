@@ -1,0 +1,35 @@
+---
+pool: 'my pool'
+
+trigger:
+  - 'main'
+jobs:
+  - job: preparation_job
+    displayName: install dotnet software
+    steps:
+      - task: DotNetCoreInstaller@1
+        inputs:
+          packageType: 'sdk'
+          version: 6.x
+  - job: build_job
+    displayName: dotnet code
+    dependsOn: preparation_job
+    condition: succeeded()
+    steps: 
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'build' 
+          publishTestResults: 'true'
+          projects: src/dotnet-demoapp.csproj 
+  - job: test_job
+    displayName: dotnet code test
+    dependsOn: 'build_job'
+    condition: succeeded()
+    steps:
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'build'
+          projects: tests/tests.csproj
+
+
+            
